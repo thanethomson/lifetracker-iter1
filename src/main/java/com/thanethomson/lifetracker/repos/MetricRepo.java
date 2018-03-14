@@ -9,4 +9,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
         path = "metrics"
 )
 public interface MetricRepo extends CrudRepository<Metric, Long> {
+
+    Metric findFirstByName(String name);
+
 }

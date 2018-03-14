@@ -10,4 +10,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
         path = "metric-families"
 )
 public interface MetricFamilyRepo extends CrudRepository<MetricFamily, Long> {
+
+    MetricFamily findFirstByName(String name);
+
 }

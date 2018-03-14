@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "metric_themes")
+@Table(name = "metric_families")
 public class MetricFamily {
 
     @Id
@@ -19,8 +19,12 @@ public class MetricFamily {
     @NotNull
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "metric_themes_families")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "metric_themes_families",
+            joinColumns = @JoinColumn(name = "family_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "theme_id", referencedColumnName = "id")
+    )
     private List<MetricTheme> themes = new ArrayList<>();
 
 }

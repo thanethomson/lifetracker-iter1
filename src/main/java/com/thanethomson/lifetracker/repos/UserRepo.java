@@ -10,4 +10,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
         path = "users"
 )
 public interface UserRepo extends CrudRepository<User, Long> {
+
+    User findFirstByEmail(String email);
+
 }
