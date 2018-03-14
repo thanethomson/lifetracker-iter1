@@ -2,8 +2,10 @@ package com.thanethomson.lifetracker.tests;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.thanethomson.lifetracker.models.User;
 import com.thanethomson.lifetracker.repos.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,13 +56,12 @@ public class BasicApiTests {
 
     @Before
     public void setUp() {
-        // flush all of our repos
-        userRepo.deleteAll();
-        sampleRepo.deleteAll();
-        sampleGroupRepo.deleteAll();
-        metricThemeRepo.deleteAll();
-        metricRepo.deleteAll();
-        metricFamilyRepo.deleteAll();
+        clearDatabase();
+    }
+
+    @After
+    public void tearDown() {
+        clearDatabase();
     }
 
     @Test
@@ -72,6 +73,13 @@ public class BasicApiTests {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/users", String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         JsonNode json = mapper.readTree(response.getBody());
+        ArrayNode usersJson = (ArrayNode)json.get("_embedded").get("users");
+        assertEquals(1, usersJson.size());
+        JsonNode userJson = usersJson.get(0);
+
+        assertEquals(michael.getEmail(), userJson.get("email").asText());
+        assertEquals(michael.getFirstName(), userJson.get("firstName").asText());
+        assertEquals(michael.getLastName(), userJson.get("lastName").asText());
     }
 
     private User loadUser(String resourceName) {
@@ -83,6 +91,15 @@ public class BasicApiTests {
         user.setLastName(json.get("lastName").asText());
         user.setPasswordHash(passwordEncoder.encode(json.get("password").asText()));
         return user;
+    }
+
+    private void clearDatabase() {
+        userRepo.deleteAll();
+        sampleRepo.deleteAll();
+        sampleGroupRepo.deleteAll();
+        metricThemeRepo.deleteAll();
+        metricRepo.deleteAll();
+        metricFamilyRepo.deleteAll();
     }
 
 }
