@@ -2,18 +2,16 @@ package com.thanethomson.lifetracker.models;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
+@Table(name = "metrics")
 public class Metric {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -25,6 +23,7 @@ public class Metric {
     private String units = null;
 
     @ManyToOne
+    @JoinColumn(name = "family_id")
     private MetricFamily family;
 
 }
