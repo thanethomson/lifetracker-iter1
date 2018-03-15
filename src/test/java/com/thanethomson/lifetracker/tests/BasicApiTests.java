@@ -79,7 +79,7 @@ public class BasicApiTests {
         loadObjects("classpath:/fixtures/users/*.json", this::loadUser);
         loadObjects("classpath:/fixtures/metric-families/*.json", this::loadMetricFamily);
         loadObjects("classpath:/fixtures/metrics/*.json", this::loadMetric);
-        //loadObjects("classpath:/fixtures/samples/*.json", this::loadSample);
+        loadObjects("classpath:/fixtures/samples/*.json", this::loadSample);
     }
 
     private void loadObjects(String resourceBasePath, Consumer<JsonNode> converter) throws IOException {
@@ -156,16 +156,16 @@ public class BasicApiTests {
 
         // load some samples
         List<Sample> expectedSamples = sampleRepo.findByUserId(michael.getId());
-        assertEquals(0, expectedSamples.size());
+        assertEquals(4, expectedSamples.size());
     }
 
     private void clearDatabase() {
-        userRepo.deleteAll();
         sampleRepo.deleteAll();
-        sampleGroupRepo.deleteAll();
-        metricThemeRepo.deleteAll();
         metricRepo.deleteAll();
+        metricThemeRepo.deleteAll();
         metricFamilyRepo.deleteAll();
+        sampleGroupRepo.deleteAll();
+        userRepo.deleteAll();
     }
 
 }
