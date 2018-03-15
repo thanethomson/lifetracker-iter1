@@ -1,0 +1,5 @@
+lifetracker:
+  database:
+    jdbcUrl: jdbc:postgresql://192.168.99.100:5432/lifetracker_iter1
+    username: lifetracker
+    password: some-mean-password
